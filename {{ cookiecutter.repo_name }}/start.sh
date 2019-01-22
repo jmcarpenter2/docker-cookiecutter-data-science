@@ -1,3 +1,4 @@
 #! /bin/bash
-./setup_circleci.sh
+chmod +x setup_repo.sh
+./setup_repo.sh
 docker-compose up -d
