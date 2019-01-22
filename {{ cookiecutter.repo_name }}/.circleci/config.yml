@@ -1,0 +1,21 @@
+version: 2
+jobs:
+    test-lint:
+    parallelism: 1
+    working_directory: ~/repo
+    docker:
+    - image: manifoldai/docker-ml-dev:1.0
+
+    steps:
+    - checkout
+    - run:
+        name: Lint check
+        command: |
+          black . --check
+          flake8 .
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - test-lint
