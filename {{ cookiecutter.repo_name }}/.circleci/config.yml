@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Flake8 lint check
           command: |
-            flake8 --max-line-length 120 ./src
+            flake8 ./src
 
 workflows:
   version: 2
