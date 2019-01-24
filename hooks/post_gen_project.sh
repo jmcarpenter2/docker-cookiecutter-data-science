@@ -1,5 +1,11 @@
 #! /bin/bash
 
+function jsonValue() {
+KEY=$1
+num=$2
+awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
+}
+
 # Initial sync of data folder to project specific prefix under the manifold-projects bucket
 echo "Creating shared data folders at s3://manifold-projects/{{ cookiecutter.repo_name }}..."
 aws s3 sync data s3://manifold-projects/{{ cookiecutter.repo_name }} 
@@ -11,10 +17,8 @@ aws ecr get-login --no-include-email | sh
 echo "Done."
 
 echo "Registering repo on GitHub..."
-curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/orgs/{{ cookiecutter.repo_owner }}/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}'
-res=$?
-echo "$res"
-if test "$res" != "0"; then
+msg=$(curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/orgs/{{ cookiecutter.repo_owner }}/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}' | jsonValue message)
+if [[ $msg == " Not Found" ]]; then
     curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/user/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}'
 fi
 echo "Done."
