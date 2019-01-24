@@ -13,6 +13,7 @@ echo "Done."
 echo "Registering repo on GitHub..."
 curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/orgs/{{ cookiecutter.repo_owner }}/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}'
 res=$?
+echo "$res"
 if test "$res" != "0"; then
     curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/user/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}'
 fi
