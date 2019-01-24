@@ -17,7 +17,7 @@ echo "Performing docker login to AWS container registry..."
 aws ecr get-login --no-include-email | sh
 echo "Done."
 
-if [ {{ cookiecutter.github_API_key }} != "[OPTIONAL (required for circleCI)] None" ]; then
+if [ "{{ cookiecutter.github_API_key }}" != "[OPTIONAL (required for circleCI)] None" ]; then
     echo "Registering repo on GitHub..."
     msg=$(curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/orgs/{{ cookiecutter.repo_owner }}/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}' | jsonValue message)
     if [[ $msg == " Not Found" ]]; then
@@ -46,7 +46,7 @@ if [ {{ cookiecutter.github_API_key }} != "[OPTIONAL (required for circleCI)] No
     git push -u {{ cookiecutter.repo_name }} master
     echo "Done."
 
-    if [ {{ cookiecutter.circleCI_API_key }} != "[OPTIONAL (required for circleCI)] None" ]; then
+    if [ "{{ cookiecutter.circleCI_API_key }}" != "[OPTIONAL (required for circleCI)] None" ]; then
 
         echo "Following the GitHub project on CircleCI..."
         curl -u {{ cookiecutter.circleCI_API_key }}: -X POST https://circleci.com/api/v1.1/project/github/{{ cookiecutter.repo_owner }}/{{ cookiecutter.repo_name }}/follow
