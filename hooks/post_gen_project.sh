@@ -47,7 +47,6 @@ if [ "{{ cookiecutter.github_API_key }}" != "[OPTIONAL (required for circleCI)] 
     echo "Done."
 
     if [ "{{ cookiecutter.circleCI_API_key }}" != "[OPTIONAL (required for circleCI)] None" ]; then
-
         echo "Following the GitHub project on CircleCI..."
         curl -u {{ cookiecutter.circleCI_API_key }}: -X POST https://circleci.com/api/v1.1/project/github/{{ cookiecutter.repo_owner }}/{{ cookiecutter.repo_name }}/follow
         echo "Done."
