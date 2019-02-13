@@ -17,8 +17,7 @@ echo "Performing docker login to AWS container registry..."
 aws ecr get-login --no-include-email | sh
 echo "Done."
 
-if [ '{{ cookiecutter.github_API_key }}' != "[OPTIONAL (required for circleCI)] None" ]; then
-    echo '{{ cookiecutter.github_API_key }}'
+if [ '{{ cookiecutter.github_API_key }}' != "[OPTIONAL (required for GitHub + circleCI)] None" ]; then
     echo "Registering repo on GitHub..."
     msg=$(curl -H 'Authorization: token {{ cookiecutter.github_API_key }}' https://api.github.com/orgs/{{ cookiecutter.repo_owner }}/repos -d '{"name":"{{ cookiecutter.repo_name }}","private":true}' | jsonValue message)
     if [[ $msg == " Not Found" ]]; then
